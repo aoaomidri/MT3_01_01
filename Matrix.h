@@ -1,5 +1,4 @@
 ﻿#pragma once
-
 #include "Vector3.h"
 #include"Matrix4x4.h"
 #include<math.h>
@@ -31,9 +30,9 @@ private:
 	Matrix4x4 viewportMatrix;
 	Vector3 kLocalVertices[3];
 
-	Vector3 v1;
+	Vector3 v1_;
 
-	Vector3 v2;
+	Vector3 v2_;
 
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
@@ -42,6 +41,8 @@ public:
 	Vector3 cross;
 	Vector3 screenVertices[3];
 
+	Vector3 screenVectorA;
+	Vector3 screenVectorB;
 
 public:
 	void Update();
@@ -77,5 +78,8 @@ public:
 	//ベクトル変換
 	Vector3 Transform(const Vector3& v, const Matrix4x4& m);
 
+	// ベクトルの内積からcosθを求める
+	float Dot(const Vector3& v1, const Vector3& v2);
 
+	bool IsFront(const Vector3& cameraPosition);
 };

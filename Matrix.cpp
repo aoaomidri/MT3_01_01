@@ -29,12 +29,14 @@ Matrix::Matrix(){
 	rotate = { 0.0f,0.0f,0.0f };
 	translate = { 0.0f,0.0f,0.0f };
 	cross = { 0.0f,0.0f,0.0f };
-	v1 = { 1.2f,-3.9f,2.5f };
-	v2 = { 2.8f,0.4f,-1.3f };
+	screenVectorA = { 0.0f,0.0f,0.0f };
+	screenVectorB = { 0.0f,0.0f,0.0f };
+	v1_ = { 1.2f,-3.9f,2.5f };
+	v2_ = { 2.8f,0.4f,-1.3f };
 };
 
 void Matrix::Update() {
-	cross = Cross(v1, v2);
+	
 	memcpy(preKeys, keys, 256);
 	Novice::GetHitKeyStateAll(keys);
 
@@ -65,6 +67,17 @@ void Matrix::Update() {
 		Vector3 ndcVertex = Transform(kLocalVertices[i], worldViewProjectionMatrix);
 		screenVertices[i] = Transform(ndcVertex, viewportMatrix);
 	}
+	screenVectorA = {
+		screenVertices[0].x - screenVertices[1].x,
+		screenVertices[0].y - screenVertices[1].y,
+		screenVertices[0].z - screenVertices[1].z,
+	};
+	screenVectorB = {
+		screenVertices[1].x - screenVertices[2].x,
+		screenVertices[1].y - screenVertices[2].y,
+		screenVertices[1].z - screenVertices[2].z,
+	};
+	cross = Cross(screenVectorA, screenVectorB);
 }
 
 Vector3 Matrix::Cross(const Vector3& vA, const Vector3& vB) {
@@ -326,4 +339,18 @@ Matrix4x4 Matrix::MakeViewportMatrix(float left, float top, float width, float h
 	result.m[3][3] = 1.0f;
 
 	return result;
+}
+
+//ベクトルの内積からcosθを求める(あってるかわからん)
+float Matrix::Dot(const Vector3& v1, const Vector3& v2) {
+	float result = 0;
+	result = (v1.x * v2.x) + (v1.y * v2.y) + (v1.z * v2.z);
+	return result;
+}
+
+bool Matrix::IsFront(const Vector3& cameraPosition) {
+	if (Dot(cameraPosition,Cross(screenVectorA,screenVectorB)))
+	{
+
+	}
 }
