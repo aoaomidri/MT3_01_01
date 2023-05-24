@@ -33,6 +33,7 @@ Matrix::Matrix(){
 	screenVectorB = { 0.0f,0.0f,0.0f };
 	v1_ = { 1.2f,-3.9f,2.5f };
 	v2_ = { 2.8f,0.4f,-1.3f };
+	cameraTranslate = { 0.0f,0.0f,-30.0f };
 };
 
 void Matrix::Update() {
@@ -58,7 +59,7 @@ void Matrix::Update() {
 
 
 	worldMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, rotate, translate);
-	cameraMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, { 0.0f,0.0f,-30.0f });
+	cameraMatrix = MakeAffineMatrix({ 1.0f,1.0f,1.0f }, { 0.0f,0.0f,0.0f }, cameraTranslate);
 	viewMatrix = Inverce(cameraMatrix);
 	projectionMatrix = MakePerspectiveFovMatrix(0.45f, (1280.0f / 720.0f), 0.1f, 100.0f);
 	worldViewProjectionMatrix = Multiply(worldMatrix, Multiply(viewMatrix, projectionMatrix));
@@ -348,9 +349,12 @@ float Matrix::Dot(const Vector3& v1, const Vector3& v2) {
 	return result;
 }
 
-bool Matrix::IsFront(const Vector3& cameraPosition) {
-	if (Dot(cameraPosition,Cross(screenVectorA,screenVectorB)))
-	{
-
+bool Matrix::IsFront() {
+	if (Dot(cameraTranslate,Cross(screenVectorA,screenVectorB))<=0.0f){
+		return true;
 	}
+	else {
+		return false;
+	}
+
 }

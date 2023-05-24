@@ -34,6 +34,8 @@ private:
 
 	Vector3 v2_;
 
+	Vector3 cameraTranslate;
+
 	char keys[256] = { 0 };
 	char preKeys[256] = { 0 };
 
@@ -81,5 +83,5 @@ public:
 	// ベクトルの内積からcosθを求める
 	float Dot(const Vector3& v1, const Vector3& v2);
 
-	bool IsFront(const Vector3& cameraPosition);
+	bool IsFront();
 };

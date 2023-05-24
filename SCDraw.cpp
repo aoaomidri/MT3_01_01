@@ -27,20 +27,3 @@ void SCPrintf::VectorScreenPrintf(int x, int y, const Vector3& vec, const char* 
 
 }
 
-void SCPrintf::Update() {
-	matrix->Update();
-	VectorScreenPrintf(0, 0, matrix->cross, "Cross");
-	if (matrix->IsFront()){
-		Novice::DrawTriangle(
-			int(matrix->screenVertices[0].x), int(matrix->screenVertices[0].y),
-			int(matrix->screenVertices[1].x), int(matrix->screenVertices[1].y),
-			int(matrix->screenVertices[2].x), int(matrix->screenVertices[2].y),
-			RED, kFillModeSolid
-		);
-	}
-	
-
-	//MatrixScreenPrintf(0, 0, matrix->orthographicMatrix, "OrthographicMatrix");
-	//MatrixScreenPrintf(0, kRowHeight * 5, matrix->perspectiveFovMatrix, "perspectiveFovMatrix");
-	//MatrixScreenPrintf(0, kRowHeight * 10, matrix->viewportMatrix, "viewportMatrix");	
-}
